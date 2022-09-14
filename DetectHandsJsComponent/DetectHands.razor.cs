@@ -15,7 +15,7 @@ namespace DetectHandsJsComponent
     {
         protected override async Task OnInitializedAsync()
         {
-            await JSHost.ImportAsync("DetectHandsJsComponent/DetectHands", "/_content/DetectHandsJsComponent/DetectHands.razor.js");
+            await JSHost.ImportAsync("DetectHandsJsComponent/DetectHands", "../_content/DetectHandsJsComponent/DetectHands.razor.js");
             await Interop.OnInit(this);
         }
 

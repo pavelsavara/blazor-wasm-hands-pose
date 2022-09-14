@@ -1,1 +1,3 @@
 autocrlf=false
+*.js binary
+*.css binary

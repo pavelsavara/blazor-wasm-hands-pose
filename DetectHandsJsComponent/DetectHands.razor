@@ -1,0 +1,18 @@
+﻿<div>
+    <div class="container">
+        <video class="input_video selfie"></video>
+        <canvas class="output_canvas" width="1280px" height="720px"></canvas>
+        <div class="shoutout">
+            <div>
+                <a href="http://www.mediapipe.dev" target="_blank">
+                    MediaPipe hands pose detection
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+@code {
+    [Parameter]
+    public RenderFragment? ChildContent { get; set; }
+}

@@ -1,0 +1,62 @@
+﻿@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+.abs {
+    position: absolute;
+}
+
+a {
+    color: white;
+    text-decoration: none;
+}
+
+a:hover {
+    color: lightblue;
+}
+
+.container {
+    position: absolute;
+    background-color: #596e73;
+    width: 100%;
+    max-height: 100%;
+}
+
+.input_video {
+    display: none;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+}
+
+.input_video.selfie {
+    transform: scale(-1, 1);
+}
+
+.input_image {
+    position: absolute;
+}
+
+.canvas-container {
+    display: flex;
+    height: 100%;
+    width: 100%;
+    justify-content: center;
+    align-items: center;
+}
+
+.output_canvas {
+    width: 100%;
+    display: block;
+    position: relative;
+    left: 0;
+    top: 0;
+}

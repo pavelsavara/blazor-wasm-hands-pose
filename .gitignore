@@ -1,0 +1,5 @@
+**/.vs/**
+**/bin/**
+**/obj/**
+*.user
+DetectHandsJsComponent/obj/DetectHandsJsComponent.csproj.nuget.g.targets

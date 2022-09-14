@@ -18,7 +18,7 @@ const videoElement = document.getElementsByClassName('input_video')[0];
 const canvasElement = document.getElementsByClassName('output_canvas')[0];
 const canvasCtx = canvasElement.getContext('2d');
 
-async function insertGlobalScript(url) {
+function insertGlobalScript(url) {
     var element = document.createElement('script');
     element.setAttribute('src', url);
     element.setAttribute('crossorigin', 'anonymous');
@@ -27,16 +27,19 @@ async function insertGlobalScript(url) {
     return new Promise((resolve) => {
         element.onload = () => {
             resolve();
-        }; 
+        };
     });
 }
 
-export async function onInit() {
-    console.log("onInit");
+let detectHandsExports;
+export async function onInit(component) {
+
+    const { getAssemblyExports } = await globalThis.getDotnetRuntime(0);
+    detectHandsExports = await getAssemblyExports("DetectHandsJsComponent.dll");
+
     await insertGlobalScript('https://cdn.jsdelivr.net/npm/@mediapipe/camera_utils@0.3/camera_utils.js')
     await insertGlobalScript('https://cdn.jsdelivr.net/npm/@mediapipe/drawing_utils@0.3/drawing_utils.js')
     await insertGlobalScript('https://cdn.jsdelivr.net/npm/@mediapipe/hands@0.4/hands.js')
-
     const hands = new mpHands.Hands({
         locateFile: (file) => {
             return `https://cdn.jsdelivr.net/npm/@mediapipe/hands@${mpHands.VERSION}/${file}`;
@@ -49,7 +52,7 @@ export async function onInit() {
         minDetectionConfidence: 0.5,
         minTrackingConfidence: 0.5
     });
-    hands.onResults(onResults);
+    hands.onResults(results => onResults(component, results));
     const camera = new Camera(videoElement, {
         onFrame: async () => {
             await hands.send({ image: videoElement });
@@ -61,9 +64,13 @@ export async function onInit() {
     console.log("camera.started");
 }
 
-function onResults(results) {
-    if (results.multiHandedness.length) console.log(JSON.stringify(results.multiHandedness, null, 2))
-    // Draw the overlays.
+const spinner = document.querySelector('.loading');
+spinner.ontransitionend = () => {
+    spinner.style.display = 'none';
+};
+
+function onResults(component, results) {
+    document.body.classList.add('loaded');
     canvasCtx.save();
     canvasCtx.clearRect(0, 0, canvasElement.width, canvasElement.height);
     canvasCtx.drawImage(results.image, 0, 0, canvasElement.width, canvasElement.height);
@@ -83,4 +90,18 @@ function onResults(results) {
         }
     }
     canvasCtx.restore();
+    if (results.multiHandedness && results.multiHandLandmarks ) {
+        const hands = [];
+        for (let index = 0; index < results.multiHandLandmarks.length; index++) {
+            const classification = results.multiHandedness[index];
+            const landmarks = results.multiHandLandmarks[index];
+            hands.push({
+                ...classification,
+                landmarks
+            })
+        }
+
+        const json = JSON.stringify({hands});
+        detectHandsExports.DetectHandsJsComponent.DetectHands.Interop.OnResults(component, json);
+    }
 }

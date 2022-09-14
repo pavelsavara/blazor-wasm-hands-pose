@@ -12,15 +12,6 @@
     position: absolute;
 }
 
-a {
-    color: white;
-    text-decoration: none;
-}
-
-a:hover {
-    color: lightblue;
-}
-
 .container {
     position: absolute;
     background-color: #596e73;
@@ -59,4 +50,36 @@ a:hover {
     position: relative;
     left: 0;
     top: 0;
+}
+
+.loading {
+    display: flex;
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    align-items: center;
+    backface-visibility: hidden;
+    justify-content: center;
+    opacity: 1;
+    transition: opacity 1s;
+}
+
+.loading .message {
+    font-size: x-large;
+}
+
+.loading .spinner {
+    position: absolute;
+    width: 120px;
+    height: 120px;
+    animation: spin 1s linear infinite;
+    border: 32px solid #bebebe;
+    border-top: 32px solid #3498db;
+    border-radius: 50%;
+}
+
+.loaded .loading {
+    opacity: 0;
 }

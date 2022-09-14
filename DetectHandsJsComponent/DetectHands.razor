@@ -1,12 +1,32 @@
 ﻿<div>
+    Hands pose detection via <a href="http://www.mediapipe.dev" target="_blank">MediaPipe</a>. Please allow your camera and show your hands.
+    <div>
+        <ul>
+            @if (DetectionResult != null)
+            {
+                foreach (var hand in this.DetectionResult.Hands)
+                {
+                    <li>
+                        @hand.Label hand at [@hand.Landmarks[0].X, @hand.Landmarks[0].Y]
+                    </li>
+                }
+                var left = this.DetectionResult.Hands.FirstOrDefault(hand => hand.Label == "Left");
+                var right = this.DetectionResult.Hands.FirstOrDefault(hand => hand.Label == "Right");
+                if (left != null && right != null && left.Landmarks[0].X > right.Landmarks[0].X)
+                {
+                    <div>Do you have your hands crossed ?</div>
+                }
+            }
+        </ul>
+    </div>
+
     <div class="container">
         <video class="input_video selfie"></video>
         <canvas class="output_canvas" width="1280px" height="720px"></canvas>
-        <div class="shoutout">
-            <div>
-                <a href="http://www.mediapipe.dev" target="_blank">
-                    MediaPipe hands pose detection
-                </a>
+        <div class="loading">
+            <div class="spinner"></div>
+            <div class="message">
+                Loading
             </div>
         </div>
     </div>
@@ -15,4 +35,6 @@
 @code {
     [Parameter]
     public RenderFragment? ChildContent { get; set; }
+
+    public DetectionResult DetectionResult { get; set; }
 }

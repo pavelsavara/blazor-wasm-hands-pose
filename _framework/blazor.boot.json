@@ -7,7 +7,7 @@
   "linkerEnabled": true,
   "resources": {
     "assembly": {
-      "DetectHandsJsComponent.dll": "sha256-gm5V\/0LHmpI8YiEDfC5ORnGYZs5HmH\/rb2c+XZXfNX4=",
+      "DetectHandsJsComponent.dll": "sha256-2UacfX3VcbyA21zJ935G8gCMUTKIPLQy2obs\/KMkKB8=",
       "HandsDemo.dll": "sha256-M9wiMPGjdAt\/MTMzV5nTDlXj+Q27aNIAXgElTDn7\/Eo=",
       "Microsoft.AspNetCore.Components.dll": "sha256-DIjYY45hyWcDKTf7gh7jECv99A8HHjYzWKDTrVmTw2E=",
       "Microsoft.AspNetCore.Components.Web.dll": "sha256-8cs8dKyamDYLDeRxVCzp4k2WD4iO\/azWMWc5dPo6+As=",

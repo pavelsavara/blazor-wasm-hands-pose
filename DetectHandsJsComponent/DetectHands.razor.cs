@@ -10,11 +10,13 @@ namespace DetectHandsJsComponent
 {
     public partial class DetectHands
     {
-        [SupportedOSPlatform("browser")]
         protected override async Task OnInitializedAsync()
         {
-            await JSHost.ImportAsync("DetectHandsJsComponent/DetectHands", "../_content/DetectHandsJsComponent/DetectHands.razor.js");
-            await Interop.OnInit(this);
+            if (OperatingSystem.IsBrowser())
+            {
+                await JSHost.ImportAsync("DetectHandsJsComponent/DetectHands", "../_content/DetectHandsJsComponent/DetectHands.razor.js");
+                await Interop.OnInit(this);
+            }
         }
 
         [SupportedOSPlatform("browser")]

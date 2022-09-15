@@ -1,25 +1,23 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Runtime.InteropServices.JavaScript;
+﻿using System.Runtime.InteropServices.JavaScript;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using System.Text.Json.Serialization.Metadata;
 using System.Diagnostics.CodeAnalysis;
+using System.Runtime.InteropServices;
+using System.Runtime.Versioning;
 
 namespace DetectHandsJsComponent
 {
     public partial class DetectHands
     {
+        [SupportedOSPlatform("browser")]
         protected override async Task OnInitializedAsync()
         {
             await JSHost.ImportAsync("DetectHandsJsComponent/DetectHands", "../_content/DetectHandsJsComponent/DetectHands.razor.js");
             await Interop.OnInit(this);
         }
 
-        //[SupportedOSPlatform("browser")]
+        [SupportedOSPlatform("browser")]
         public partial class Interop
         {
             [DynamicDependency(DynamicallyAccessedMemberTypes.PublicMethods, typeof(JsonTypeInfo))]
@@ -36,7 +34,7 @@ namespace DetectHandsJsComponent
             {
                 DetectHands detectHands = (DetectHands)component;
                 detectHands.DetectionResult = JsonSerializer.Deserialize<DetectionResult>(json, DetectionResult.SerializeOptions);
-                Console.WriteLine("OnResults " + detectHands.DetectionResult.Hands.Count);
+                Console.WriteLine("OnResults " + detectHands.DetectionResult!.Hands.Count);
                 detectHands.StateHasChanged();
             }
         }
@@ -50,15 +48,15 @@ namespace DetectHandsJsComponent
             WriteIndented = true
         };
 
-        public List<Hand> Hands { get; set; }
+        public List<Hand> Hands { get; set; } = new List<Hand>();
     }
 
     public record Hand
     {
         public int Index { get; set; }
         public double Score { get; set; }
-        public string Label { get; set; }
-        public List<Landmark> Landmarks { get; set; }
+        public string Label { get; set; } = "";
+        public List<Landmark> Landmarks { get; set; } = new List<Landmark>();
     }
 
     public record Landmark

@@ -3,7 +3,7 @@
 
     <div class="container">
         <video class="input_video selfie"></video>
-        <canvas class="output_canvas" width="1280px" height="720px"></canvas>
+        <canvas class="output_canvas"></canvas>
         <div class="loading">
             <div class="spinner"></div>
             <div class="message">
@@ -11,30 +11,38 @@
             </div>
         </div>
         <div>
-            <ul>
-                @if (DetectionResult != null)
+            @if (DetectionResult != null)
+            {
+                if (this.DetectionResult.Hands != null && this.DetectionResult.Hands.Count > 0)
                 {
-                    if (this.DetectionResult.Hands != null && this.DetectionResult.Hands.Count > 0)
-                    {
-                        foreach (var hand in this.DetectionResult.Hands)
+                    <ul>
+                        @foreach (var hand in this.DetectionResult.Hands)
                         {
-                            <li>
-                                @hand.Label hand at [@hand.Landmarks[0].X, @hand.Landmarks[0].Y]
-                            </li>
+                            if(hand.Landmarks.Count>0)
+                            {
+                                var palm=hand.Landmarks[0];
+                                int x = (int)(palm.X*100);
+                                int y = (int)(palm.Y*100);
+                                <li>
+                                    @hand.Label hand at [@x, @y]
+                                </li>
+                            }
                         }
-                        var left = this.DetectionResult.Hands.FirstOrDefault(hand => hand.Label == "Left");
-                        var right = this.DetectionResult.Hands.FirstOrDefault(hand => hand.Label == "Right");
-                        if (left != null && right != null && left.Landmarks[0].X > right.Landmarks[0].X)
-                        {
-                            <div>Do you have your hands crossed ?</div>
-                        }
-                    }
-                    else
+                    </ul>
+                    var left = this.DetectionResult.Hands.FirstOrDefault(hand => hand.Label == "Left");
+                    var right = this.DetectionResult.Hands.FirstOrDefault(hand => hand.Label == "Right");
+                    if (left != null && right != null
+                    && left.Landmarks.Count > 0 && right.Landmarks.Count > 0
+                    && left.Landmarks[0].X > right.Landmarks[0].X)
                     {
-                        <div>I don't see any hands.</div>
+                        <div>Do you have your hands crossed ?</div>
                     }
                 }
-            </ul>
+                else
+                {
+                    <div>I don't see any hands.</div>
+                }
+            }
         </div>
     </div>
 
@@ -44,5 +52,5 @@
     [Parameter]
     public RenderFragment? ChildContent { get; set; }
 
-    public DetectionResult DetectionResult { get; set; }
+    public DetectionResult? DetectionResult { get; set; }
 }

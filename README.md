@@ -1,6 +1,7 @@
 # Blazor WASM demo of new JSInterop
 
 This demo shows the Blazor WASM client side integration with 3rd party JavaScript library.
+
 The awesome hands detection code is by [MediaPipe](https://www.mediapipe.dev/)
 
 With Net7 RC1 or later do:
